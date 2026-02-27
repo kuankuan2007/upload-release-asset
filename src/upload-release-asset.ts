@@ -33,7 +33,8 @@ export default async function run() {
         repo,
         release_id: Number(releaseId),
         name: path.basename(file),
-        data: data as unknown as string,
+        // @ts-expect-error This API only accepts strings, but I don't want to encode them to avoid errors caused by incorrect encoding. Therefore, I used Buffer directly.
+        data,
         token,
         contentType,
       });
