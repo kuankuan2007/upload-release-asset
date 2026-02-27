@@ -2,11 +2,11 @@
   "name": "upload-release-asset",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "scripts": {
     "lint": "eslint src/**/*",
     "lint:fix": "elint src/**/* --fix",
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node21 --format=esm --outfile=dist/index.mjs"
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/index.cjs"
   },
   "author": "kuankuan",
   "license": "MulanPSL-2.0",
