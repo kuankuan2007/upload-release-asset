@@ -23585,7 +23585,6 @@ async function run() {
   const repo = getInput("repo", { required: true });
   const releaseId = getInput("release_id", { required: true });
   const files = getInput("files", { required: true }).split("\n").filter(Boolean).map((file) => import_path.default.resolve(process.cwd(), file.trim()));
-  const contentType = getInput("content_type", { required: false }) || "application/octet-stream";
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
     setFailed("GITHUB_TOKEN is required");
@@ -23600,9 +23599,9 @@ async function run() {
         repo,
         release_id: Number(releaseId),
         name: import_path.default.basename(file),
+        // @ts-expect-error This API only accepts strings, but I don't want to encode them to avoid errors caused by incorrect encoding. Therefore, I used Buffer directly.
         data,
-        token,
-        contentType
+        token
       });
       output.push(resItem.data.browser_download_url);
       info(`uploaded ${file} to ${resItem.data.browser_download_url}`);
@@ -23622,7 +23621,7 @@ async function upload(options) {
     name: options.name,
     data: options.data,
     headers: {
-      "content-type": options.contentType
+      "content-type": "application/octet-stream"
     }
   });
 }

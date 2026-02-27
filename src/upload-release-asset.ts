@@ -13,9 +13,6 @@ export default async function run() {
     .split('\n')
     .filter(Boolean)
     .map((file) => path.resolve(process.cwd(), file.trim()));
-  const contentType =
-    core.getInput('content_type', { required: false }) || 'application/octet-stream';
-
   const token = process.env.GITHUB_TOKEN;
 
   if (!token) {
@@ -36,7 +33,6 @@ export default async function run() {
         // @ts-expect-error This API only accepts strings, but I don't want to encode them to avoid errors caused by incorrect encoding. Therefore, I used Buffer directly.
         data,
         token,
-        contentType,
       });
       output.push(resItem.data.browser_download_url);
       core.info(`uploaded ${file} to ${resItem.data.browser_download_url}`);
@@ -54,7 +50,6 @@ export async function upload(options: {
   name: string;
   data: string;
   token: string;
-  contentType: string;
 }) {
   const octokit = getOctokit(options.token);
 
@@ -65,7 +60,7 @@ export async function upload(options: {
     name: options.name,
     data: options.data,
     headers: {
-      'content-type': options.contentType,
+      'content-type': 'application/octet-stream',
     },
   });
 }
