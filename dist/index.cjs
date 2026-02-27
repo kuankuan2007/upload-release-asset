@@ -23584,10 +23584,6 @@ async function run() {
   const owner = getInput("owner", { required: true });
   const repo = getInput("repo", { required: true });
   const releaseId = getInput("release_id", { required: true });
-  info(`owner: ${owner}, repo: ${repo}, releaseId: ${releaseId}`);
-  info(`cwd: ${process.cwd()}`);
-  const dirs = await import_fs3.default.promises.readdir(process.cwd());
-  info(`dirs: ${dirs.join(", ")}`);
   const files = getInput("files", { required: true }).split("\n").filter(Boolean).map((file) => import_path.default.resolve(process.cwd(), file.trim()));
   const contentType = getInput("content_type", { required: false }) || "application/octet-stream";
   const token = process.env.GITHUB_TOKEN;
@@ -23595,28 +23591,25 @@ async function run() {
     setFailed("GITHUB_TOKEN is required");
     return;
   }
-  for (const file of files) {
-    if (await import_fs3.default.promises.access(file, import_fs3.default.constants.R_OK).then(
-      () => false,
-      () => true
-    )) {
-      setFailed(`file ${file} is not readable`);
-      return;
-    }
-  }
   const output = [];
   for (const file of files) {
-    const data = await import_fs3.default.promises.readFile(file);
-    const resItem = await upload({
-      owner,
-      repo,
-      release_id: Number(releaseId),
-      name: import_path.default.basename(file),
-      data,
-      token,
-      contentType
-    });
-    output.push(resItem.data.browser_download_url);
+    try {
+      const data = await import_fs3.default.promises.readFile(file);
+      const resItem = await upload({
+        owner,
+        repo,
+        release_id: Number(releaseId),
+        name: import_path.default.basename(file),
+        data,
+        token,
+        contentType
+      });
+      output.push(resItem.data.browser_download_url);
+      info(`uploaded ${file} to ${resItem.data.browser_download_url}`);
+    } catch (error2) {
+      setFailed(`failed to upload ${file}: ${error2}`);
+      return;
+    }
   }
   setOutput("browser_download_urls", output.join("\n"));
 }

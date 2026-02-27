@@ -7,10 +7,6 @@ export default async function run() {
   const owner = core.getInput('owner', { required: true });
   const repo = core.getInput('repo', { required: true });
   const releaseId = core.getInput('release_id', { required: true });
-  core.info(`owner: ${owner}, repo: ${repo}, releaseId: ${releaseId}`);
-  core.info(`cwd: ${process.cwd()}`);
-  const dirs = await fs.promises.readdir(process.cwd());
-  core.info(`dirs: ${dirs.join(', ')}`);
 
   const files = core
     .getInput('files', { required: true })
@@ -27,31 +23,26 @@ export default async function run() {
     return;
   }
 
-  for (const file of files) {
-    if (
-      await fs.promises.access(file, fs.constants.R_OK).then(
-        () => false,
-        () => true
-      )
-    ) {
-      core.setFailed(`file ${file} is not readable`);
-      return;
-    }
-  }
   const output: string[] = [];
   for (const file of files) {
-    const data = await fs.promises.readFile(file);
+    try {
+      const data = await fs.promises.readFile(file);
 
-    const resItem = await upload({
-      owner,
-      repo,
-      release_id: Number(releaseId),
-      name: path.basename(file),
-      data: data as unknown as string,
-      token,
-      contentType,
-    });
-    output.push(resItem.data.browser_download_url);
+      const resItem = await upload({
+        owner,
+        repo,
+        release_id: Number(releaseId),
+        name: path.basename(file),
+        data: data as unknown as string,
+        token,
+        contentType,
+      });
+      output.push(resItem.data.browser_download_url);
+      core.info(`uploaded ${file} to ${resItem.data.browser_download_url}`);
+    } catch (error) {
+      core.setFailed(`failed to upload ${file}: ${error}`);
+      return;
+    }
   }
   core.setOutput('browser_download_urls', output.join('\n'));
 }
