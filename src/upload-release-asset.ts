@@ -7,6 +7,11 @@ export default async function run() {
   const owner = core.getInput('owner', { required: true });
   const repo = core.getInput('repo', { required: true });
   const releaseId = core.getInput('release_id', { required: true });
+  core.info(`owner: ${owner}, repo: ${repo}, releaseId: ${releaseId}`);
+  core.info(`cwd: ${process.cwd()}`);
+  const dirs= await fs.promises.readdir(process.cwd());
+  core.info(`dirs: ${dirs.join(', ')}`);
+
   const files = core
     .getInput('files', { required: true })
     .split('\n')
