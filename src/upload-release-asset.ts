@@ -40,14 +40,14 @@ export default async function run() {
   }
   const output: string[] = [];
   for (const file of files) {
-    const data = await fs.promises.readFile(file, { encoding: 'utf8' });
+    const data = await fs.promises.readFile(file);
 
     const resItem = await upload({
       owner,
       repo,
       release_id: Number(releaseId),
       name: path.basename(file),
-      data,
+      data: data as unknown as string,
       token,
       contentType,
     });

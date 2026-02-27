@@ -23606,7 +23606,7 @@ async function run() {
   }
   const output = [];
   for (const file of files) {
-    const data = await import_fs3.default.promises.readFile(file, { encoding: "utf8" });
+    const data = await import_fs3.default.promises.readFile(file);
     const resItem = await upload({
       owner,
       repo,
