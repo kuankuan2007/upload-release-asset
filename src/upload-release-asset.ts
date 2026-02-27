@@ -9,14 +9,14 @@ export default async function run() {
   const releaseId = core.getInput('release_id', { required: true });
   core.info(`owner: ${owner}, repo: ${repo}, releaseId: ${releaseId}`);
   core.info(`cwd: ${process.cwd()}`);
-  const dirs= await fs.promises.readdir(process.cwd());
+  const dirs = await fs.promises.readdir(process.cwd());
   core.info(`dirs: ${dirs.join(', ')}`);
 
   const files = core
     .getInput('files', { required: true })
     .split('\n')
     .filter(Boolean)
-    .map((file) => path.resolve(file.trim()));
+    .map((file) => path.resolve(process.cwd(), file.trim()));
   const contentType =
     core.getInput('content_type', { required: false }) || 'application/octet-stream';
 
@@ -30,8 +30,8 @@ export default async function run() {
   for (const file of files) {
     if (
       await fs.promises.access(file, fs.constants.R_OK).then(
-        () => true,
-        () => false
+        () => false,
+        () => true
       )
     ) {
       core.setFailed(`file ${file} is not readable`);

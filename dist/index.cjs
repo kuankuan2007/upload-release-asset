@@ -23588,7 +23588,7 @@ async function run() {
   info(`cwd: ${process.cwd()}`);
   const dirs = await import_fs3.default.promises.readdir(process.cwd());
   info(`dirs: ${dirs.join(", ")}`);
-  const files = getInput("files", { required: true }).split("\n").filter(Boolean).map((file) => import_path.default.resolve(file.trim()));
+  const files = getInput("files", { required: true }).split("\n").filter(Boolean).map((file) => import_path.default.resolve(process.cwd(), file.trim()));
   const contentType = getInput("content_type", { required: false }) || "application/octet-stream";
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
@@ -23597,8 +23597,8 @@ async function run() {
   }
   for (const file of files) {
     if (await import_fs3.default.promises.access(file, import_fs3.default.constants.R_OK).then(
-      () => true,
-      () => false
+      () => false,
+      () => true
     )) {
       setFailed(`file ${file} is not readable`);
       return;
