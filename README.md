@@ -2,11 +2,11 @@
 
 This GitHub Action uploads one or more assets to an **existing GitHub Release**.
 
-This project exists because the original **actions/upload-release-asset** repository was archived and is no longer maintained. GitHub’s suggested maintained alternative, **softprops/action-gh-release**, is primarily focused on creating releases (and its workflow/inputs are not a low-cost 1:1 replacement when you only want to upload assets).
+This project exists because the original **[actions/upload-release-asset](https://github.com/actions/upload-release-asset)** repository was archived and is no longer maintained. GitHub’s suggested maintained alternative, **[softprops/action-gh-release](https://github.com/softprops/action-gh-release)**, is primarily focused on creating releases (and its workflow/inputs are not a low-cost 1:1 replacement when you only want to upload assets).
 
 So this repo is a **minimal-cost, equivalent migration** of the original logic and behavior, updated to modern tooling.
 
-## What changed vs actions/upload-release-asset
+## What changed vs [actions/upload-release-asset](https://github.com/actions/upload-release-asset)
 
 - **Modern runtime & SDKs**: upgraded to Node.js **24**, `@actions/core@3` and `@actions/github@9`.
 - **Modern API inputs**: use `owner`, `repo`, `release_id` instead of `upload_url`.
@@ -75,7 +75,7 @@ jobs:
           echo "${{ steps.upload.outputs.browser_download_urls }}"
 ```
 
-## Migration from actions/upload-release-asset
+## Migration from [actions/upload-release-asset](https://github.com/actions/upload-release-asset)
 
 ### 1) Replace `upload_url` with `owner` + `repo` + `release_id`
 

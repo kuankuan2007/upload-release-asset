@@ -1,14 +1,22 @@
 {
-  "name": "upload-release-asset",
+  "name": "@kuankuan/upload-release-asset",
   "version": "0.1.0",
-  "description": "",
+  "description": "Upload release asset to GitHub release",
   "main": "dist/index.cjs",
   "scripts": {
     "lint": "eslint src/**/*",
-    "lint:fix": "elint src/**/* --fix",
     "build": "esbuild src/index.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/index.cjs"
   },
   "author": "kuankuan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuankuan/upload-release-asset.git"
+  },
+  "licenses": [
+    {
+      "type": "MulanPSL-2.0"
+    }
+  ],
   "license": "MulanPSL-2.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
