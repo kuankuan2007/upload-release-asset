@@ -19,7 +19,7 @@ outputs:
     description: 'The URL users can navigate to in order to download the uploaded asset, split by newlines'
 runs:
   using: 'node24'
-  main: 'dist/index.js'
+  main: 'dist/index.mjs'
 branding:
   icon: 'package'
   color: 'gray-dark'
