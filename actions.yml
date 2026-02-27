@@ -1,0 +1,25 @@
+name: 'Upload a Release Asset'
+description: 'Upload a release asset to an existing release in your repository'
+author: 'GitHub'
+inputs:
+  owner:
+    description: 'The owner of the repository'
+    required: true
+  repo:
+    description: 'The name of the repository'
+    required: true
+  release_id:
+    description: 'The ID of the release to upload the asset to'
+    required: true
+  files:
+    description: 'The files to upload, split by newlines'
+    required: true
+outputs:
+  browser_download_urls:
+    description: 'The URL users can navigate to in order to download the uploaded asset, split by newlines'
+runs:
+  using: 'node24'
+  main: 'dist/index.js'
+branding:
+  icon: 'package'
+  color: 'gray-dark'

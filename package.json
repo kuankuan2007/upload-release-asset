@@ -1,0 +1,26 @@
+{
+  "name": "upload-release-asset",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "eslint src/**/*",
+    "lint:fix": "elint src/**/* --fix",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node21 --format=esm --outfile=dist/index.mjs"
+  },
+  "author": "kuankuan",
+  "license": "MulanPSL-2.0",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.3.1",
+    "esbuild": "^0.27.3",
+    "eslint": "^10.0.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
+  },
+  "type": "module",
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@actions/github": "^9.0.0"
+  }
+}
